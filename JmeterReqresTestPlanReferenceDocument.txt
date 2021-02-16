@@ -1,0 +1,494 @@
+REQRES - API Performance Testing
+
+MainUrl - https://reqres.in
+
+Test URLS Below
+ 
+1)https://reqres.in/api/users?page=2
+2)https://reqres.in/api/users
+
+Git URL - https://github.com/bvisvanathan/JmeterSimpliAssesment.git
+
+Observation - https://reqres.in/api/users?page=2
+
+Load Testing - 1000 users (no issues satisfied KPI of <2s response time per request)
+Stress Testing - 5000 users (no response time KPI applied) performance degrade but works
+                 10000 users (no response time KPI applied) performance degrade more but works
+                 15000 users (no response time KPI applied) failures and dosent work
+Spike Testing -  5000 users spike (no response time KPI applied) performance degrade but works
+                 10000 users (no response time KPI applied) performance degrade more but works
+                 15000 users (no response time KPI applied) failures and dosent work
+
+Observation - https://reqres.in/api/users
+
+Load Testing - 25 users (no issues satisfied KPI of <2s response time per request)
+Stress Testing - > 25 users (no response time KPI applied) performance degrade few requests dosent work
+Spike Testing -  > 25 users (no response time KPI applied) performance degrade few requests dosent work
+
+Please find the detail test scenarios from jmeter test run supporting the observation  
+
+
+Performance Test Results
+
+1)https://reqres.in/api/users?page=2
+
+Assertion/KPI Used for load,stress and spike testing below
+
+Response Assertion - 200 
+Duration Assertion - 2000ms [NOTE - Response time above 2000ms is considered degrade in performance]
+
+LOAD Testing 
+
+a) Scenario 1 
+
+INPUT Proivded
+
+No of threads - 100
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 146ms
+Throughput - 87 requests/sec
+Deviation - 19
+Failed Requests - 0  [Note Failures are based on KPI mentioned above as a requirement]
+
+Result - Performance success for 100 simulated users with satisfied KPI
+
+b) Scenario 2 
+
+INPUT Proivded
+
+No of threads - 200
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 159ms
+Throughput - 172.6 requests/sec
+Deviation - 28
+Failed Requests - 0  [Note Failures are based on KPI mentioned above as a requirement]
+
+Result - Performance success for 200 simulated users with satisfied KPI
+
+c) Scenario 3 
+
+INPUT Proivded
+
+No of threads - 500
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 166ms
+Throughput - 413.9 requests/sec
+Deviation - 18
+Failed Requests - 0  [Note Failures are based on KPI mentioned above as a requirement]
+
+Result - Performance success for 500 simulated users with satisfied KPI
+
+d) Scenario 4 
+
+INPUT Proivded
+
+No of threads - 1000
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 626ms
+Throughput - 394.9 requests/sec
+Deviation - 339
+Failed Requests - 0  [Note Failures are based on KPI mentioned above as a requirement]
+
+Result - Performance success for 1000 simulated users with satisfied KPI
+
+e) Scenario 5 
+
+INPUT Proivded
+
+No of threads - 1000
+Rampup period - 100
+Loopcount - 10
+
+Output Results
+
+Average Response Time - 60ms
+Throughput - 99.5 requests/sec
+Deviation - 55
+Failed Requests - 0  [Note Failures are based on KPI mentioned above as a requirement]
+
+Result - Performance excellent success for 1000 simulated users each making 10 request 
+         and rampup of 100sec with satisfied KPI
+
+f) Scenario 6 
+
+INPUT Proivded
+
+No of threads - 1500
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 3052ms
+Throughput - 293.2 requests/sec
+Deviation - 674
+Failed Requests - 80%  [Note Failures are based on KPI mentioned above as a requirement]
+
+Result - Performance degrade failure for 1500 simulated users and didnt satisfy KPI
+
+Conclusion - Performed well under different load conditions untill 1000 simulated concurrent users.
+             Performance degrade and average response time is greater than 3s (Set KPI - 2S) for 1500 simulated concurrent users. 
+             Load Capacity Satisfying set KPI - 1000 simulated users.
+
+
+STRESS Testing 
+
+NOTE - Duration reponse time is set to 30 sec so any request greater than 30 sec consider to be a failure
+and serious degrade in performance..
+
+a) Scenario 1 
+
+INPUT Proivded
+
+No of threads - 4000
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 1911ms
+Throughput - 64.6 requests/sec
+Deviation - 1517
+Failed Requests - 0  [Note Failures are based on KPI mentioned above as a requirement]
+
+Result - Performance stress success for 4000 simulated users with thershlod response time below 30 sec 
+
+b) Scenario 2 
+
+INPUT Proivded
+
+No of threads - 5000
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 2862ms
+Throughput - 139.3 requests/sec
+Deviation - 6611
+Failed Requests - 1  [Note Response time greater than 30 sec]
+
+Result - Performance stress failure for 5000 simulated users with thershlod response time below 30 sec 
+
+c) Scenario 3 
+
+NOTE Duration assertion response time removed for this scenario to find the exact connection breaking point..
+
+INPUT Proivded
+
+No of threads - 15000
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 15969ms
+Throughput - 150.5 requests/sec
+Deviation - 12753
+Failed Requests - 6.78%  [Note all request failed  with connection time out]
+
+Result - Performance stress failure for 15000 simulated users with 6.78% failure with connection timeout
+
+d) Scenario 4 
+
+NOTE Duration assertion response time removed for this scenario to find the exact connection breaking point..
+
+INPUT Proivded
+
+No of threads - 20000
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 15343ms
+Throughput - 94.6 requests/sec
+Deviation - 15156
+Failed Requests - 25.77%  [Note all request failed  with connection time out]
+
+Result - Performance stress failure for 20000 simulated users with 25% failure with connection timeout
+
+e) Scenario 5 
+
+NOTE Duration assertion response time removed for this scenario to find the exact connection breaking point..
+
+INPUT Proivded
+
+No of threads - 10000
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 11109ms
+Throughput - 64.8 requests/sec
+Deviation - 15156
+Failed Requests - 0.22%  [Note all request failed  with connection time out]
+
+Result - Performance stress failure for 10000 simulated users with 0.22% failure with connection timeout
+
+Conclusion - Performed well under different stress conditions untill 5000 simulated concurrent users.
+             Performance degrade after 5000 simulated concurrent users with response time greater than 30S for few request.
+             Performance failure after 10000 simulated concurrent users with connection timeout errors of 0.20 percent.
+             Stress Capacity - 10000 simulated users.
+ 
+
+SPIKE Testing 
+
+Stimulating steady Master Thread Running 100 steady users each making 10 requests with rampup of 100 seconds
+which already proven a good performance turnover during load testing..
+
+INPUT Proivded below for master steady thread
+
+No of threads - 100
+Rampup period - 100
+Loopcount - 10
+
+Spike scenarios tested below for spike thread created with a constant timer delay of 40 sec
+so master thread keeps running steadily untill 100 sec and a spike is provided using another
+thread at 40 sec..
+
+a) Scenario 1 for spike thread after 40 sec [Steady master thread already running for 100 sec]
+
+INPUT Proivded
+
+No of threads - 500
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 105ms
+Throughput - 15.1 requests/sec
+Deviation - 72
+Failed Requests - 0.00%  [Note Failures are based on KPI mentioned above as a requirement]
+
+Result - Performance is good for 500 spiked simulated users with respect to KPI 
+
+b) Scenario 2 for spike thread after 40 sec [Steady master thread already running for 100 sec]
+
+INPUT Proivded
+
+No of threads - 1000
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 262ms
+Throughput - 20.1 requests/sec
+Deviation - 250
+Failed Requests - 0.05%  [Note Failures are based on KPI mentioned above as a requirement]
+
+Result - Performance degrade for 1000 spiked simulated users with respect to KPI response time
+         for few request observed to be more than 2 sec which failed KPI
+
+c) Scenario 3 for spike thread after 40 sec [Steady master thread already running for 100 sec]
+
+NOTE Duration assertion response time removed for this scenario to find the exact connection breaking point..
+
+INPUT Proivded
+
+No of threads - 5000
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 3801ms
+Throughput - 50.0 requests/sec
+Deviation - 3578
+Failed Requests - 0.00%  [Note no request failed  with connection time out]
+
+Result - Performance for 5000 spiked simulated users without response time consideration
+         and no faiures observed.
+
+d) Scenario 5 for spike thread after 40 sec [Steady master thread already running for 100 sec]
+
+NOTE Duration assertion response time removed for this scenario to find the exact connection breaking point..
+
+INPUT Proivded
+
+No of threads - 10000
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 16970ms
+Throughput - 110.4 requests/sec
+Deviation - 10647
+Failed Requests - 00.18%  [Note about .18% request failed  with connection time out]
+
+Result - Performance for 10000 spiked simulated users without response time consideration
+         and 00.18% faiures observed.   
+
+NOTE for Stress and Spike response time KPI of 2s not considered to determine the breaking point.. 
+
+
+2) https://reqres.in/api/users
+   Request Body - {"name":"gmorpheus","job":"gleader"}
+
+Assertion/KPI Used for load,stress and spike testing below
+
+Response Assertion - 201 
+Duration Assertion - 2000ms [NOTE - Response time above 2000ms is considered degrade in performance]
+
+LOAD Testing 
+
+a) Scenario 1 
+
+INPUT Proivded
+
+No of threads - 25
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 537ms
+Throughput - 16.7 requests/sec
+Deviation - 70
+Failed Requests - 0  [Note Failures are based on KPI mentioned above as a requirement]
+
+Result - Performance success for 25 simulated users with satisfied KPI
+
+b) Scenario 2 
+
+INPUT Proivded
+
+No of threads - 26
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 570ms
+Throughput - 17.0 requests/sec
+Deviation - 193
+Failed Requests - 2.78%  [Note Failures are based on KPI mentioned above as a requirement]
+
+Result - Performance failure for 26 simulated users with satisfied KPI receving response service not responvise.
+
+
+Conclusion - Performed well under different load conditions untill 25 simulated concurrent users.
+             started receving service unavailable message 503 for few requests after 25 simulated users.
+             
+
+STRESS Testing 
+
+NOTE - Duration reponse time is set to 30 sec so any request greater than 30 sec consider to be a failure
+and serious degrade in performance..
+
+a) Scenario 1 
+
+INPUT Proivded
+
+No of threads - 25
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 537ms
+Throughput - 16.7 requests/sec
+Deviation - 70
+Failed Requests - 0  [Note Failures are based on KPI mentioned above as a requirement]
+
+Result - Performance success for 25 simulated users with satisfied KPI
+
+b) Scenario 2 
+
+INPUT Proivded
+
+No of threads - 26
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 570ms
+Throughput - 17.0 requests/sec
+Deviation - 193
+Failed Requests - 2.78%  [Note Failures are based on KPI mentioned above as a requirement]
+
+Result - Performance failure for 26 simulated users with satisfied KPI receving response service not responvise.
+
+Conclusion - API not stable to Perform stress testing since api provides error service unavailable message 503 for few requests after 25 simulated users
+           
+
+SPIKE Testing 
+
+Stimulating steady Master Thread Running 25 steady users each making 1 requests with rampup of 100 seconds
+which already proven a good performance turnover during load testing..
+
+INPUT Proivded below for master steady thread
+
+No of threads - 25
+Rampup period - 100
+Loopcount - 1
+
+Spike scenarios tested below for spike thread created with a constant timer delay of 40 sec
+so master thread keeps running steadily untill 100 sec and a spike is provided using another
+thread at 40 sec..
+
+a) Scenario 1 for spike thread after 40 sec [Steady master thread already running for 100 sec]
+
+INPUT Proivded
+
+No of threads - 25
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 528ms
+Throughput - 31.1 requests/min
+Deviation - 82
+Failed Requests - 0.00%  [Note Failures are based on KPI mentioned above as a requirement]
+
+Result - Performance is good for 25 spiked simulated users with respect to KPI 
+
+
+b) Scenario 3 for spike thread after 40 sec [Steady master thread already running for 100 sec]
+
+NOTE Duration assertion response time removed for this scenario to find the exact connection breaking point..
+
+INPUT Proivded
+
+No of threads - 30
+Rampup period - 1
+Loopcount - 1
+
+Output Results
+
+Average Response Time - 588ms
+Throughput - 31 requests/min
+Deviation - 91
+Failed Requests - 2.00%  [Note 503 Service unavailable]
+
+Result - Performance for 30 spiked simulated users without response time consideration
+         and faiures observed.
+
+  
+
+
+
+
+
